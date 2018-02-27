@@ -1,24 +1,38 @@
 from sklearn import datasets
-import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+
+#iris dataset
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
 
 
-plt.style.use('ggplot')
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, test_size=0.4)
+knn = KNeighborsClassifier(n_neighbors=8)
+knn.fit(X_train, y_train)
+y_pred = knn.predict(X_test)
 
-iris=datasets.load_iris()
+cm = confusion_matrix(y_test, y_pred)
+cr = classification_report(y_test, y_pred)
 
-print(iris.keys())
+print("Confusion matrix \n", cm)
+print("Classification_report \n", cr)
 
-X=iris.data
-y=iris.target
+True_Positive = np.diag(cm)
+Lower_triangular = np.tril(cm, k=-1) #without diagonal
+Upper_triangular = np.triu(cm, k=1)
 
-df=pd.DataFrame(X, columns=iris.feature_names)
-print(df.head())
+print("True Positive", True_Positive, "\n")
+print('Lower Triangular', Lower_triangular, "\n")
+print('Upper Triangular', Upper_triangular, "\n")
 
+precision = True_Positive.sum() / (True_Positive.sum()+Lower_triangular.sum(axis=0).sum())
+recall = True_Positive.sum() /(True_Positive.sum() +Upper_triangular.sum(axis=0).sum())
 
-pd.plotting.scatter_matrix(df,c=y,figsize=[8,8], s=150, marker='D')
-plt.show()
-
+print("Precision: ", precision)
+print("Recall: ", recall)
 
