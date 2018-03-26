@@ -26,6 +26,7 @@ df['len'] = df.name.apply(lambda x: len(x))
 
 #create train data frame
 df_train = df.copy()
+print(df_train.head())
 y = df_train['sex'].values
 df_train = df_train.drop(['name', 'sex'], axis=1)
 df_train = pd.get_dummies(df_train)

@@ -6,23 +6,34 @@ from mlxtend.plotting import plot_decision_regions
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
+
 def plot_decision_regions_(X, y, classifier, test_idx=None, resolution=0.02):
+    """small convenience function to visualize the decision boundaries for 2D datasets"""
+
     # setup marker generator and color map
     markers = ('s', 'x', 'o', '^', 'v')
     colors = ('red', 'blue', 'lightgreen', 'gray', 'cyan')
+    # create a color map from the list of colors via ListedColormap
     cmap = ListedColormap(colors[:len(np.unique(y))])
 
     # plot the decision surface
+    # determine the minimum and maximum values for the two feature
     x1_min, x1_max = X[:, 0].min() - 1, X[:, 0].max() + 1
     x2_min, x2_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    # create a pair of grid arrays use feature vectors
     xx1, xx2 = np.meshgrid(np.arange(x1_min, x1_max, resolution),
                            np.arange(x2_min, x2_max, resolution))
+    # trained our perceptron classifier on two feature dimensions
     Z = classifier.predict(np.array([xx1.ravel(), xx2.ravel()]).T)
+    # reshaping the predicted class labels Z into a grid with the same dimensions as xx1 and xx2
     Z = Z.reshape(xx1.shape)
+    #  draw a contour plot
+    #  function that maps the different decision regions to different colors for each predicted class in the grid array
     plt.contourf(xx1, xx2, Z, alpha=0.3, cmap=cmap)
     plt.xlim(xx1.min(), xx1.max())
     plt.ylim(xx2.min(), xx2.max())
 
+    # plot class samples
     for idx, cl in enumerate(np.unique(y)):
         plt.scatter(x=X[y == cl, 0],
                     y=X[y == cl, 1],
@@ -50,9 +61,9 @@ def plot_decision_regions_(X, y, classifier, test_idx=None, resolution=0.02):
 def train_test_datasets():
 
     iris = datasets.load_iris()
-    X = iris.data[:,[2,3]]
+    X = iris.data[:, [2, 3]]
     y = iris.target
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1, test_size=0.3)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, test_size=0.3)
 
     tree = DecisionTreeClassifier(criterion='entropy', max_depth=3, random_state=0)
     tree.fit(X_train, y_train)

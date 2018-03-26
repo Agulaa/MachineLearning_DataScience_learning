@@ -26,9 +26,9 @@ True_Positive = np.diag(cm)
 Lower_triangular = np.tril(cm, k=-1) #without diagonal
 Upper_triangular = np.triu(cm, k=1)
 
-print("True Positive", True_Positive, "\n")
-print('Lower Triangular', Lower_triangular, "\n")
-print('Upper Triangular', Upper_triangular, "\n")
+print("True Positive \n", True_Positive, "\n")
+print('Lower Triangular \n', Lower_triangular, "\n")
+print('Upper Triangular \n', Upper_triangular, "\n")
 
 precision = True_Positive.sum() / (True_Positive.sum()+Lower_triangular.sum(axis=0).sum())
 recall = True_Positive.sum() /(True_Positive.sum() +Upper_triangular.sum(axis=0).sum())
