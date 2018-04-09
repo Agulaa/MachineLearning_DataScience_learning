@@ -5,7 +5,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 
-#iris dataset
+
 iris = datasets.load_iris()
 X = iris.data
 y = iris.target
