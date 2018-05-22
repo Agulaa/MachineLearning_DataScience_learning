@@ -1,1 +1,1 @@
-
+Scraping page https://www.packtpub.com/packt/offers/free-learning once a day at 7:00, and  if book is interesting for user send mail to him with message : 'Download book from page: https://www.packtpub.com/packt/offers/free-learning '. 
